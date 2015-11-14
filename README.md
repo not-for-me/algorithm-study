@@ -4,6 +4,8 @@
 
 ## Problems
 1. Anagram
-  * [Java Implementation]()
-  * [C Implementation]()
+  * [Java Implementation](https://github.com/not-for-me/algorithm-study/blob/master/String/Anagram/Anagram.java)
+  * [C Implementation](https://github.com/not-for-me/algorithm-study/blob/master/String/Anagram/Anagram.c)
   * [Python 3 Implementation]()
+2. Breadth First Search
+  * [Java Implementation](https://github.com/not-for-me/algorithm-study/blob/master/Graph/BFS/BFS.java)
