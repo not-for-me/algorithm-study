@@ -1,4 +1,6 @@
-package alg.java.drill.BFS;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.IntStream;
 
 /**
  * http://www.geeksforgeeks.org/greedy-algorithms-set-6-dijkstras-shortest-path-algorithm/
@@ -8,7 +10,8 @@ package alg.java.drill.BFS;
 public class Dijkstra {
 	public static void main(String... args) {
 		Dijkstra mock = new Dijkstra();
-		int graph[][] = new int[][] { { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
+		int graph[][] = new int[][] {
+		        { 0, 4, 0, 0, 0, 0, 0, 8, 0 },
 		        { 4, 0, 8, 0, 0, 0, 0, 11, 0 },
 		        { 0, 8, 0, 7, 0, 4, 0, 0, 2 },
 		        { 0, 0, 7, 0, 9, 14, 0, 0, 0 },
@@ -18,24 +21,57 @@ public class Dijkstra {
 		        { 8, 11, 0, 0, 0, 0, 1, 0, 7 },
 		        { 0, 0, 2, 0, 0, 0, 6, 7, 0 }
 		};
-		mock.useDijkstra(graph);
+		mock.useDijkstra(9, 0, graph);
 
 		/**
 		 * Expected Output
 		 * Vertex Distance from Source
-		 *      0        0
-		 *      1        4
-		 *      2       12
-		 *      3       19
-		 *      4       21
-		 *      5       11
-		 *      6       9
-		 *      7       8
-		 *      8       14
+		 * 0 0
+		 * 1 4
+		 * 2 12
+		 * 3 19
+		 * 4 21
+		 * 5 11
+		 * 6 9
+		 * 7 8
+		 * 8 14
 		 */
 	}
 
-	private void useDijkstra(int[][] graph) {
-	}
+	private void useDijkstra(int vertexNum, int sourceVertex, int[][] graph) {
+		// 1. Initialized shortest path set and distance array with INFINITE
+		Set<Integer> spSet = new HashSet<>();
+		int distance[] = new int[vertexNum];
+		for (int i = 0; i < vertexNum; i++) {
+			distance[i] = Integer.MAX_VALUE;
+		}
 
+		distance[sourceVertex] = 0;
+		while (spSet.size() < vertexNum) {
+			int minDistance = Integer.MAX_VALUE;
+			int minIndex = -1;
+			// 2. Pickup the minimum distance vertex size
+			for (int v = 0; v < vertexNum; v++) {
+				boolean notInSpSet = !spSet.contains(v);
+				if (notInSpSet && distance[v] < minDistance) {
+					minDistance = distance[v];
+					minIndex = v;
+				}
+			}
+			spSet.add(minIndex);
+
+			for (int v = 0; v < vertexNum; v++) {
+				boolean notInSpSet = !spSet.contains(v);
+				boolean isNotSelf = v != minIndex;
+				boolean isConnected = graph[minIndex][v] != 0;
+				boolean islessThanDistance =  distance[minIndex] + graph[minIndex][v] <
+						distance[v];
+				if ( notInSpSet && isNotSelf && isConnected && islessThanDistance) {
+					distance[v] = distance[minIndex] + graph[minIndex][v];
+				}
+			}
+		}
+
+		IntStream.range(0, vertexNum).forEach(i -> System.out.println(i + " " + distance[i]));
+	}
 }
