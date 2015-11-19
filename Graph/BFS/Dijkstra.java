@@ -1,5 +1,3 @@
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.IntStream;
 
 /**
@@ -40,33 +38,32 @@ public class Dijkstra {
 
 	private void useDijkstra(int vertexNum, int sourceVertex, int[][] graph) {
 		// 1. Initialized shortest path set and distance array with INFINITE
-		Set<Integer> spSet = new HashSet<>();
+		boolean spSet[] = new boolean[vertexNum];
 		int distance[] = new int[vertexNum];
 		for (int i = 0; i < vertexNum; i++) {
+			spSet[i] = false;
 			distance[i] = Integer.MAX_VALUE;
 		}
 
 		distance[sourceVertex] = 0;
-		while (spSet.size() < vertexNum) {
+		for(int i = 0; i < vertexNum; i++) {
 			int minDistance = Integer.MAX_VALUE;
 			int minIndex = -1;
 			// 2. Pickup the minimum distance vertex size
 			for (int v = 0; v < vertexNum; v++) {
-				boolean notInSpSet = !spSet.contains(v);
-				if (notInSpSet && distance[v] < minDistance) {
+				if (!spSet[v] && distance[v] < minDistance) {
 					minDistance = distance[v];
 					minIndex = v;
 				}
 			}
-			spSet.add(minIndex);
+			spSet[minIndex] = true;
 
 			for (int v = 0; v < vertexNum; v++) {
-				boolean notInSpSet = !spSet.contains(v);
 				boolean isNotSelf = v != minIndex;
 				boolean isConnected = graph[minIndex][v] != 0;
 				boolean islessThanDistance =  distance[minIndex] + graph[minIndex][v] <
 						distance[v];
-				if ( notInSpSet && isNotSelf && isConnected && islessThanDistance) {
+				if ( !spSet[v] && isNotSelf && isConnected && islessThanDistance) {
 					distance[v] = distance[minIndex] + graph[minIndex][v];
 				}
 			}
